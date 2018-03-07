@@ -1,6 +1,8 @@
 # Collector Library
 
-A simple but effective library for getting list of records with filtering, sorting, paging, and search. Impelementation uses Eloquent (as opposed to Query Builder). The targeted use case is rapid prototypeing of an MVP.
+A simple but effective package for getting a list of records with filtering, sorting, paging, and search. Impelementation uses Eloquent (as opposed to Query Builder). The targeted use case is rapid prototypeing of an MVP.
+
+The library's design is inspired by the use of "Delegates" in iOS/Swift programming. This is my first attempt at a PHP impelementation, I'm sure it can be improved upon ;). Basically the idea is to encaspluate in the package the common functionality invovled in getting list data. The parts that are specific to the model itself (the type of data being fetched) are 'delegated' to the actual model classes.  For intance, getting a list of all "widget" can probably be done by generic code, however only a "Widget" knows how to filter a list of itself. This filter functionality is "delegated" to the Widget model class.
 
 ## Install
 
@@ -39,7 +41,7 @@ use PsgcLaravelPackages\Collector\Collectable;
 use PsgcLaravelPackages\Collector\CollectableTraits;
 
 // (2) use the interface 'Collectable'
-class Widget extends BaseModel implements Collectable
+class Widget implements Collectable
 {
     // (3) Use CollectableTraits (default 'core' implementation)
     use CollectableTraits;
