@@ -1,0 +1,20 @@
+{
+    "name": "psgc-laravel-packages/collector",
+    "description": "Eloquent-based collector library for easy generation of filtered data lists (the 'R' in CRUD).",
+    "keywords": ["laravel", "collector"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "psgc-laravel-packages",
+            "email": "peter@peltronic.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PsgcLaravelPackages\\Collector\\": "src/"
+        }
+    },
+    "require": {
+        "illuminate/support": "~5"
+    }
+}
