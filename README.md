@@ -1,5 +1,7 @@
 # Collector Library
 
+A simple but effective library for getting list of records with filtering, sorting, paging, and search. Impelementation uses Eloquent (as opposed to Query Builder). The targeted use case is rapid prototypeing of an MVP.
+
 ## Install
 
 Add to project's composer.json...
@@ -25,7 +27,7 @@ Run composer update
 
 Let's say you have a DB table called 'widgets' with an associated model 'Widget.php'. 
 
-The table widgets has columns `name`, and `guid`, and `owner_id`,which is a foreign key to a table of users.
+The table widgets has columns `name`, and `guid`, and `owner_id`, which is a foreign key to a table of users.
 
 ### Setup model
 
@@ -39,12 +41,13 @@ use PsgcLaravelPackages\Collector\CollectableTraits;
 // (2) use the interface 'Collectable'
 class Widget extends BaseModel implements Collectable
 {
-    // (3) Use CollectableTraits (default implementation)
+    // (3) Use CollectableTraits (default 'core' implementation)
     use CollectableTraits;
 
     ...
 
     // (4) Implement interface method that tells the collector how it should 'filter' widgets...
+    //        NOTE: not part of default implemenation
     public static function filterQuery(&$query,$filters)
     {
         if ( !empty($filters['owner_id']) ) {
@@ -55,6 +58,7 @@ class Widget extends BaseModel implements Collectable
 
 
     // (5) Implement interface method that tells the collector how it should 'search' widgets...
+    //        NOTE: not part of default implemenation
     public static function searchQuery(&$query,$search)
     {
         if ( empty($search) || ( is_array($search) && !array_key_exists('value',$search) ) ) {
