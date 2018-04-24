@@ -24,9 +24,12 @@ final class Collector
         return $this->_count;
     }
 
-    public function getList($filters=[],$search=[],$paging=[],$sorting=[])
+    public function getList($filters=[],$search=[],$paging=[],$sorting=[],$withs=[])
     {
         $query = $this->_query; // %FIXME: make sure this is copy by value!
+        foreach ($withs as $w) {
+            $query = $query->with($w); // works
+        }
         $query = call_user_func_array( $this->_filterQueryDelegate,[&$query,$filters] ); // apply filters
         $query = call_user_func_array( $this->_searchQueryDelegate,[&$query,$search] ); // apply search
         $query = call_user_func_array( $this->_sortQueryDelegate,[&$query,$sorting] ); // apply sort
