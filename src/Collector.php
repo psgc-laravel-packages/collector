@@ -1,40 +1,42 @@
 <?php 
 namespace PsgcLaravelPackages\Collector;
 
+use Illuminate\Database\Eloquent\Model;
+
 final class Collector 
 {
-    protected $_query = null;
+    protected $_model = null;
 
     public $_filterQueryDelegate = null;
     public $_searchQueryDelegate = null;
     public $_pageQueryDelegate = null;
 
-    public function __construct($query)
+    public function __construct(Model $model)
     {
-        $this->_query = $query;
+        $this->_model = $model;
     }
 
     public function getCount($filters=[],$search=[])
     {
         // no sort or paging
-        $query = $this->_query;
-        $query = call_user_func_array( $this->_filterQueryDelegate,[&$query,$filters] ); // apply filters
-        $query = call_user_func_array( $this->_searchQueryDelegate,[&$query,$search] ); // apply search
-        $this->_count = $query->count();
+        $model = $this->_model;
+        $model = call_user_func_array( $this->_filterQueryDelegate,[&$model,$filters] ); // apply filters
+        $model = call_user_func_array( $this->_searchQueryDelegate,[&$model,$search] ); // apply search
+        $this->_count = $model->count();
         return $this->_count;
     }
 
     public function getList($filters=[],$search=[],$paging=[],$sorting=[],$withs=[])
     {
-        $query = $this->_query; // %FIXME: make sure this is copy by value!
+        $model = $this->_model; // %FIXME: make sure this is copy by value!
         foreach ($withs as $w) {
-            $query = $query->with($w); // works
+            $model = $model->with($w); // works
         }
-        $query = call_user_func_array( $this->_filterQueryDelegate,[&$query,$filters] ); // apply filters
-        $query = call_user_func_array( $this->_searchQueryDelegate,[&$query,$search] ); // apply search
-        $query = call_user_func_array( $this->_sortQueryDelegate,[&$query,$sorting] ); // apply sort
-        $query = self::applyPaging($query,$paging);
-        return $query->get();
+        $model = call_user_func_array( $this->_filterQueryDelegate,[&$model,$filters] ); // apply filters
+        $model = call_user_func_array( $this->_searchQueryDelegate,[&$model,$search] ); // apply search
+        $model = call_user_func_array( $this->_sortQueryDelegate,[&$model,$sorting] ); // apply sort
+        $model = self::applyPaging($model,$paging);
+        return $model->get();
     } // getList()
 
     // Paging is same for all models
@@ -42,7 +44,7 @@ final class Collector
     //              'length' => {number of items per page},
     //              'offset' => {start on item #} | 'page' => {start on page #},
     //             ]
-    protected static final function applyPaging(&$query,$paging)
+    protected static final function applyPaging(&$model,$paging)
     {
         if ( !empty($paging) && array_key_exists('length',$paging) ) {
 
@@ -57,9 +59,9 @@ final class Collector
             $take = max(0,$take); // floor to 0
 
             //dd($skip,$take);
-            $query->skip($skip);
-            $query->take($take);
+            $model->skip($skip);
+            $model->take($take);
         }
-        return $query;
+        return $model;
     }
 }

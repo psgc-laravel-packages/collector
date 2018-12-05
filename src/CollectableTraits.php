@@ -3,11 +3,14 @@ namespace PsgcLaravelPackages\Collector;
 
 trait CollectableTraits
 {
-
     // collector factory
-    public static function collector()
+    public static function collector(string $dbConnection=null) : Collector
     {
-        $_collector = new Collector( self::query() ); // Eloquent implemenation
+        $m = new self; // Eloquent model object
+        if ( !empty($dbConnection) ) {
+            $m->connection = $dbConnection;
+        } // ...otherwise will just use default
+        $_collector = new Collector( $m ); // Eloquent implemenation
 
         // Assign/Implement delegates for the collector...
         $_collector->_filterQueryDelegate = self::class.'::filterQuery';
