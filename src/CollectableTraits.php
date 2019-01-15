@@ -4,6 +4,29 @@ namespace PsgcLaravelPackages\Collector;
 // ref: 
 //   ~ https://stackoverflow.com/questions/46795357/dynamic-eloquent-query-injecting-is-not-working-in-laravel
 //   ~ https://github.com/psgc-laravel-packages/collector/commit/f0f675b96ab84525f9475f64b1cc8b4a8e19a64b#diff-a86dec1b33fef51cff5407a0f4112b06
+//   ~ => https://stackoverflow.com/questions/27445232/change-connection-on-builder-get
+//   ~ https://medium.com/teknomuslim/how-to-run-laravel-using-multiple-database-connections-d7e8dcb7ed2a
+//   ~ https://laravel.com/api/5.5/Illuminate/Database/Schema/Builder.html
+//   ~ https://stackoverflow.com/questions/41216195/best-way-to-make-a-connection-to-database-in-laravel
+//   ~ 
+//   ~ 
+//   ~ 
+//   ~ 
+/*
+    // Retrieve all french words by user (via model)
+    $model = new Word;
+    $model->connection = 'french'; // set connection on-the-fly
+    $model->where('user_id',5) // !! doesn't work, not added to query
+    // ...
+    $words = $model->get();
+
+    // Retrieve all french words by user (via query)
+    $query = Word::query(); 
+    $query->connection = 'french'; // !! doesn't work, how to set set connection ? <= want to do this
+    $query->where('user_id',5) // dyanmically adding where works in this case
+    // ...
+    $words = $query->get();
+ */
 trait CollectableTraits
 {
     // collector factory
