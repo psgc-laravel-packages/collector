@@ -41,7 +41,7 @@ trait CollectableTraits
          */
 
         //dd(self::query());
-        $_collector = new Collector( self::query() ); 
+        $_collector = new Collector( self::on($dbConnection) ); 
 
         // Assign/Implement delegates for the collector...
         $_collector->_filterQueryDelegate = self::class.'::filterQuery';
